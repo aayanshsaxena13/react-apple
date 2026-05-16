@@ -62,15 +62,15 @@ export default function Toggle({
                         before:absolute
                         before:inset-0
                         before:rounded-full
-                        before:bg-white/20
-                        before:blur-md
+                        before:bg-white/10
+                        before:blur-xs
                         before:opacity-0
                         before:transition-opacity
                     ${dragging
                             ? `
-                            scale-125
+                            scale-105
                             before:opacity-100
-                            shadow-[0_8px_30px_rgba(255,255,255,0.25),0_12px_24px_rgba(0,0,0,0.25)]
+                            shadow-[0_4px_12px_rgba(255,255,255,0.1),0_6px_14px_rgba(0,0,0,0.2)]
                             backdrop-blur-[32px]
                         `
                             : "scale-100"
