@@ -51,7 +51,7 @@ export default function Toggle({
                     className={`
                         col-start-1 row-start-1
                         h-6 w-10 rounded-full
-                        bg-gradient-to-br from-white/40 to-white/5
+                        bg-linear-to-br from-white/40 to-white/5
                         backdrop-blur-3xl
                         border-[0.5px] border-white/60
                         shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_2px_4px_rgba(255,255,255,0.4)]
@@ -66,8 +66,7 @@ export default function Toggle({
                         before:blur-md
                         before:opacity-0
                         before:transition-opacity
-                    ${
-                        dragging
+                    ${dragging
                             ? `
                             scale-125
                             before:opacity-100
@@ -75,7 +74,7 @@ export default function Toggle({
                             backdrop-blur-[32px]
                         `
                             : "scale-100"
-                    }
+                        }
                     `}
                     style={{
                         transformOrigin: checked ? "right center" : "left center",
