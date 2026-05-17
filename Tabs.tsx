@@ -10,14 +10,14 @@ export interface TabItem {
 interface ReusableTabsProps {
   tabs: TabItem[];
   defaultTabId?: string;
-  /* Reduced default constraint from max-w-90 down to max-w-72 (288px) for micro scaling */
-  maxWidthClassName?: string;
+  /* Changed default width target to a narrow, fixed item width class variable */
+  tabWidthClassName?: string;
 }
 
 export default function Tabs({
   tabs,
   defaultTabId,
-  maxWidthClassName = "max-w-72"
+  tabWidthClassName = "w-20" // Strict, narrow uniform width per tab (80px)
 }: ReusableTabsProps) {
   if (!tabs || tabs.length === 0) return null;
 
@@ -42,16 +42,16 @@ export default function Tabs({
 
   return (
     <div className="flex w-full flex-col items-center gap-4 m-2">
-      {/* --- Tab Navigation Controller (Shrunk dimensions) --- */}
-      <div className={`relative flex w-full ${maxWidthClassName} items-center gap-0.5 rounded-2xl border border-white/5 bg-white/5 p-0.5 backdrop-blur-2xl shadow-[0_4px_12px_rgba(0,0,0,0.2)]`}>
+      {/* --- Tab Navigation Controller (Shrunk to content using inline-flex) --- */}
+      <div className="relative inline-flex items-center gap-0.5 rounded-2xl border border-white/5 bg-white/5 p-0.5 backdrop-blur-2xl shadow-[0_4px_12px_rgba(0,0,0,0.2)]">
         {tabs.map((tab, idx) => {
           const isActive = activeIndex === idx;
           return (
             <button
               key={tab.id}
               onClick={() => handleTabChange(idx)}
-              /* Decreased py-1.5 to py-1 and text size to text-[12px] to trim the visual footprint */
-              className="relative flex-1 rounded-2xl py-1 text-center text-[12px] font-medium tracking-tight transition-colors duration-200 focus-visible:outline-none"
+              /* Swapped 'flex-1' for strict uniform width class */
+              className={`relative ${tabWidthClassName} shrink-0 rounded-2xl py-1 text-center text-[12px] font-medium tracking-tight transition-colors duration-200 focus-visible:outline-none`}
               style={{ WebkitTapHighlightColor: "transparent" }}
             >
               {/* Liquid Glass Pill Indicator */}
@@ -63,7 +63,6 @@ export default function Tabs({
                     scaleY: [1, 1.12, 1],
                     transformOrigin: travelDirection >= 0 ? ["left center", "right center"] : ["right center", "left center"]
                   }}
-                  /* Updated radius to match compressed container profile */
                   className="absolute inset-0 rounded-2xl border border-white/10 bg-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_0.5px_0.5px_rgba(255,255,255,0.15)]"
                   transition={{
                     layout: {
@@ -86,7 +85,7 @@ export default function Tabs({
 
               {/* Tab Label Text */}
               <span
-                className={`relative z-10 block transition-colors duration-200 ${isActive ? "text-white" : "text-zinc-400 hover:text-zinc-200"
+                className={`relative z-10 block truncate px-1 transition-colors duration-200 ${isActive ? "text-white" : "text-zinc-400 hover:text-zinc-200"
                   }`}
               >
                 {tab.label}
@@ -96,7 +95,7 @@ export default function Tabs({
         })}
       </div>
 
-      {/* --- Animated Router View Container (Maintains unconstrained full width) --- */}
+      {/* --- Animated Router View Container --- */}
       <div className="w-full overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
