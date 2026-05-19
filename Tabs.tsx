@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export interface TabItem {
   id: string;
@@ -10,14 +10,13 @@ export interface TabItem {
 interface ReusableTabsProps {
   tabs: TabItem[];
   defaultTabId?: string;
-  /* Changed default width target to a narrow, fixed item width class variable */
   tabWidthClassName?: string;
 }
 
 export default function Tabs({
   tabs,
   defaultTabId,
-  tabWidthClassName = "w-20" // Strict, narrow uniform width per tab (80px)
+  tabWidthClassName = "w-20"
 }: ReusableTabsProps) {
   if (!tabs || tabs.length === 0) return null;
 
@@ -35,14 +34,11 @@ export default function Tabs({
     }
   };
 
-  const activeTabId = tabs[activeIndex].id;
-  const activeTabContent = tabs[activeIndex].content;
-
   const travelDirection = activeIndex - prevIndex;
 
   return (
     <div className="flex w-full flex-col items-center gap-4 m-2">
-      {/* --- Tab Navigation Controller (Shrunk to content using inline-flex) --- */}
+      {/* --- Tab Navigation Controller --- */}
       <div className="relative inline-flex items-center gap-0.5 rounded-2xl border border-white/5 bg-white/5 p-0.5 backdrop-blur-2xl shadow-[0_4px_12px_rgba(0,0,0,0.2)]">
         {tabs.map((tab, idx) => {
           const isActive = activeIndex === idx;
@@ -50,7 +46,6 @@ export default function Tabs({
             <button
               key={tab.id}
               onClick={() => handleTabChange(idx)}
-              /* Swapped 'flex-1' for strict uniform width class */
               className={`relative ${tabWidthClassName} shrink-0 rounded-2xl py-1 text-center text-[12px] font-medium tracking-tight transition-colors duration-200 focus-visible:outline-none`}
               style={{ WebkitTapHighlightColor: "transparent" }}
             >
@@ -95,20 +90,26 @@ export default function Tabs({
         })}
       </div>
 
-      {/* --- Animated Router View Container --- */}
-      <div className="w-full overflow-hidden">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTabId}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.15, ease: "easeInOut" }}
-            className="w-full"
-          >
-            {activeTabContent}
-          </motion.div>
-        </AnimatePresence>
+      {/* --- Persistent View Container (Keeps State Alive) --- */}
+      <div className="relative w-full overflow-hidden">
+        {tabs.map((tab, idx) => {
+          const isActive = activeIndex === idx;
+          return (
+            <motion.div
+              key={tab.id}
+              initial={false}
+              animate={{
+                opacity: isActive ? 1 : 0,
+                y: isActive ? 0 : 4,
+                pointerEvents: isActive ? "auto" : "none"
+              }}
+              transition={{ duration: 0.15, ease: "easeInOut" }}
+              className={`${isActive ? "relative block" : "absolute inset-0 hidden pointer-events-none"} w-full`}
+            >
+              {tab.content}
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
