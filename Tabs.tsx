@@ -13,6 +13,8 @@ interface ReusableTabsProps {
   tabWidthClassName?: string;
 }
 
+export let setTab: any;
+
 export default function Tabs({
   tabs,
   defaultTabId,
@@ -33,11 +35,12 @@ export default function Tabs({
       setActiveIndex(index);
     }
   };
-
+  setTab = handleTabChange;
+  
   const travelDirection = activeIndex - prevIndex;
 
   return (
-    <div className="flex w-full flex-col items-center gap-4 m-2">
+    <div className="flex flex-col items-center gap-4 m-2">
       {/* --- Tab Navigation Controller --- */}
       <div className="relative inline-flex items-center gap-0.5 rounded-2xl border border-white/5 bg-white/5 p-0.5 backdrop-blur-2xl shadow-[0_4px_12px_rgba(0,0,0,0.2)]">
         {tabs.map((tab, idx) => {
