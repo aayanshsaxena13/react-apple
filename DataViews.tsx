@@ -53,7 +53,7 @@ export function Table<T extends Record<string, any[]>>({
             key={item}
             className={`
               bg-[#2e2e2e] flex items-center justify-center border-gray-500
-              min-[450px]:w-20 max-[450px]:w-30
+              min-[450px]:w-30 max-[450px]:w-40
               p-px min-[450px]:p-px
               ${index === 0 ? 'rounded-tl-xl' : ''}
               ${index === keys.length - 1 ? 'rounded-bl-xl border-b-0' : 'border-b-[1.6px] min-[450px]:border-b-[1.6px]'}
