@@ -36,7 +36,7 @@ export default function Tabs({
     }
   };
   setTab = handleTabChange;
-  
+
   const travelDirection = activeIndex - prevIndex;
 
   return (

@@ -23,7 +23,7 @@ export default function Typography({ type, children, color, alignment, margin = 
 
     return (
         <>
-            { type === "heading" ? <h1 className={`${colors[color as keyof typeof colors]} ${align[alignment as keyof typeof align]} text-3xl font-extrabold m-${margin}`}>{children}</h1> : <p className={`${colors[color as keyof typeof colors]} ${align[alignment as keyof typeof align]} text-md font-medium m-${margin}`}>{children}</p> }
+            {type === "heading" ? <h1 className={`${colors[color as keyof typeof colors]} ${align[alignment as keyof typeof align]} text-3xl font-extrabold m-${margin}`}>{children}</h1> : <p className={`${colors[color as keyof typeof colors]} ${align[alignment as keyof typeof align]} text-md font-medium m-${margin}`}>{children}</p>}
         </>
     )
 }
